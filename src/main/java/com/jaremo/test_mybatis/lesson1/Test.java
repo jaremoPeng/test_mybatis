@@ -29,18 +29,18 @@ public class Test {
         SqlSession sqlSession = ssf.openSession(); // SqlSession 完全包含了面向数据库执行 SQL 命令所需的所有方法
         TestMapper testMapper = sqlSession.getMapper(TestMapper.class); // 根据sqlsession获取mapper接口的实例
 //        log.debug(testMapper.selectAll()); // 查询所有
-//        log.debug(testMapper.selectById(1)); // 单条件查询
+        log.debug(testMapper.selectById(1)); // 单条件查询
 //        testMapper.deleteById(3); // 根据条件删除
 //        Account account = new Account();
 //        account.setAbalance("500");
 //        account.setAid("5");
 //        account.setAname("zl");
 //        testMapper.insertAccount(account);
-        Account account = new Account();
-        account.setAid("5");
-        account.setAname("彭永杰");
-        testMapper.updateById(account);
-        log.debug("success");
+//        Account account = new Account();
+//        account.setAid("5");
+//        account.setAname("彭永杰");
+//        testMapper.updateById(account);
+//        log.debug("success");
         sqlSession.commit();
     }
 }

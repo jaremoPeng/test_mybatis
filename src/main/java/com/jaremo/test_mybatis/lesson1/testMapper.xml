@@ -8,10 +8,13 @@
     <select id="selectAll" resultType="java.util.Map"> <!-- resultType设置结果集的返回值-->
         select * from account
     </select>
-    <select id="selectById" parameterType="int" resultType="java.util.Map">
+    <select id="selectById" parameterType="int" resultType="Account">
         SELECT * FROM account WHERE aid=#{aid}
     </select>
     <insert id="insertAccount" parameterType="com.jaremo.test_mybatis.lesson1.Account" >
+        <!--<selectKey resultType="结果集的类型" keyProperty="key-name" order="BEFORE" statementType="STATEMENT"> &lt;!&ndash; 查询数据库表的主键 &ndash;&gt;
+            select 主键列名 from 表名
+        </selectKey>-->
         INSERT INTO account (aid,aname,abalance) VALUES (#{aid},#{aname},#{abalance})
     </insert>
     <delete id="deleteById" parameterType="int" >
