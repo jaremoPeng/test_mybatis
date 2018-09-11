@@ -1,0 +1,95 @@
+mybatis学习1,
+    mybatis的jar包:
+    <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+        <dependency>
+          <groupId>org.mybatis</groupId>
+          <artifactId>mybatis</artifactId>
+          <version>3.4.5</version>
+        </dependency>
+
+    mybatis的核心的配置文件(全局配置文件)
+        <?xml version="1.0" encoding="UTF-8" ?>
+                <!DOCTYPE configuration
+                PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-config.dtd">
+        <configuration> // 全局配置
+        // 属性配置 properties
+        <properties resource="jdbc.properties"></properties> <!-- 引用mysql的配置文件-->
+        // 全局配置参数
+         <settings>
+                <setting name="" value=""/>
+        </settings>
+        // 类型别名
+        <typeAliases></typeAliases>
+        // 类型处理器
+        <typeHandlers></typeHandlers>
+        // 对象工厂
+        <objectFactory type=""></objectFactory>
+        // 插件
+        <plugins>
+            <plugin interceptor=""></plugin>
+        </plugins>
+        // 环境集合属性对象 environments
+        <environments default="development">
+            // 环境集合子属性对象
+            <environment id="development">
+                <transactionManager type="JDBC"/> // 事务管理  默认是采用jdbc的事务,但是mybatis的事务是手动提交的
+                <dataSource type="POOLED"> // 数据源
+                    <property name="driver" value="${driverClass}"/>
+                    <property name="url" value="${url}"/>
+                    <property name="username" value="${user}"/>
+                    <property name="password" value="${pwd}"/>
+                </dataSource>
+            </environment>
+        </environments>
+        // 映射器
+        <mappers>
+            <mapper resource="com/jaremo/test_mybatis/lesson1/testMapper.xml"></mapper> <!-- 设置其它接口映射配置文件的类路径-->
+        </mappers>
+        </configuration>
+
+    mybatis的映射文件
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+        <!-- 类路径下的mybatis的映射文件--> 定义了操作数据库的sql，每个sql是一个statement
+        <mapper namespace="com.jaremo.test_mybatis.lesson1.mapper.TestMapper"><!-- 命名空间,无他不行-->
+            <select id="selectAll" resultType="java.util.Map"> <!-- resultType设置结果集的返回值-->
+                select * from account
+            </select>
+        </mapper>
+
+        resultType 进行输出映射，只有查询出来的列名和pojo中的属性名一致，才可以映射成功
+        parameterType 指定输入参数的类型
+        resultMap 完成高级输出结果映射
+        #{}实现的是向prepareStatement中的预处理语句中设置参数值，sql语句中#{}表示一个占位符即?
+        ${}和#{}不同，通过${}可以将parameterType 传入的内容拼接在sql中且不进行jdbc类型转换， ${}可以接收简单类型值或pojo属性值，
+            如果parameterType传输单个简单类型值，${}括号中只能是value。使用${}不能防止sql注入，但是有时用${}会非常方便
+
+        在类中使用mybatis执行sql语句
+        String resource = "mb.xml"; // 类路径下的mybatis的资源文件的路径
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        // SqlSession的工厂类
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        SqlSession sqlSession = sqlSessionFactory.openSession(); // SqlSession 完全包含了面向数据库执行 SQL 命令所需的所有方法
+        TestMapper testMapper = sqlSession.getMapper(TestMapper.class); // 根据sqlsession获取mapper接口的实例.通过接口去执行对应映射文件的Statement
+        log.debug(testMapper.selectAll());
+        sqlSession.commit();
+
+        总结:
+            在全局配置文件中,mappers属性,需指定对应的映射文件,也就是多个mapper
+            在类中String resource = "mb.xml"; 指明全局配置文件路径即可
+
+            另外: 在pom.xml文件中设置如下代码:
+                <build>
+                <resources>
+                  <!--解决Mybatis在IDEA中找不到mapper映射文件问题-->
+                  <resource>
+                    <directory>src/main/java</directory> 指明映射文件在哪个包名下(也就是让程序去哪个包下扫描)
+                    <includes>
+                      <include>**/*.xml</include> 指明映射文件的路径
+                    </includes>
+                  </resource>
+                </resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 类路径下的mybatis的映射文件-->
+<mapper namespace="com.jaremo.test_mybatis.lesson1.mapper.TestMapper"><!-- 命名空间,无他不行-->
+    <select id="selectAll" resultType="java.util.Map"> <!-- resultType设置结果集的返回值-->
+        select * from account
+    </select>
+    <select id="selectById" parameterType="int" resultType="java.util.Map">
+        SELECT * FROM account WHERE aid=#{aid}
+    </select>
+    <insert id="insertAccount" parameterType="com.jaremo.test_mybatis.lesson1.Account" >
+        INSERT INTO account (aid,aname,abalance) VALUES (#{aid},#{aname},#{abalance})
+    </insert>
+    <delete id="deleteById" parameterType="int" >
+        DELETE FROM account WHERE aid=#{aid}
+    </delete>
+    <update id="updateById" parameterType="com.jaremo.test_mybatis.lesson1.Account" >
+        UPDATE account SET aname=#{aname} WHERE aid=#{aid}
+    </update>
+</mapper>
