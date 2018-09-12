@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jaremo.test_mybatis.lesson2.mapper.StudentMapper">
+    <!--
+        多对一的映射关系
+            多个学生对应一个班级(实际关系),但是在代码实现却是一对一的关系,即一个学生类存在一个班级类(表面关系)
+            在根据学生ID查询学生信息时,需要附带查询出该学生对应的班级信息
+    -->
+    <resultMap id="studentMap" type="student">
+        <!-- 将这个下面代码查询出的班级ID,交给GradeMapper.selectById(gid)处理,会返回一个Grade对象
+            将这个对象赋值给学生类的Grade属性
+            property  是学生类中的属性名
+            column  是学生表的代表班级的列名
+            select  是执行GradeMapper对应的方法
+         -->
+        <association property="grade" column="gid" select="com.jaremo.test_mybatis.lesson2.mapper.GradeMapper.selectById"></association>
+    </resultMap>
+
+
+    <select id="selectById" resultMap="studentMap"> <!-- 这里查询出学生信息,同时也查询出来了班级的ID -->
+        select * from student where sid=#{sid}
+    </select>
+
+    <select id="selectByGid" resultType="student">
+        select * from student where gid=#{gid}
+    </select>
+</mapper>

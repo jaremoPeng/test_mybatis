@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jaremo.test_mybatis.lesson2.mapper.GradeMapper">
+    <!-- 结果集的映射 -->
+    <resultMap id="gradeMap" type="grade" autoMapping="true">
+        <id column="gid" property="gid"></id> <!-- 这是同下面的result功能相似, 只不过是用于数据表主键 column是数据库表的列名, property是bean中的属性名 -->
+        <result column="gname" property="gname1"></result> <!-- 这是解决数据库和bean的属性不同的问题 -->
+    </resultMap>
+
+    <!--
+        根据studentMapper.xml文件传入的gid,查询出grade
+        一对多关系映射
+            一个班级对应多个学生,一个班级类下存在一个list<学生>的属性
+    -->
+    <resultMap id="gradetiaojian" type="grade">
+        <id column="gid" property="gid"></id>
+        <result column="gname" property="gname1"></result>
+        <!--
+            property  属性名
+            javatype  该属性的类型
+            column  传入参数名
+        -->
+        <collection property="studentList" column="gid" javaType="list" select="com.jaremo.test_mybatis.lesson2.mapper.StudentMapper.selectByGid"></collection>
+    </resultMap>
+
+    <select id="selectAllGrade" resultMap="gradeMap">
+        select * from grade
+    </select>
+
+    <!-- 根据gid查询Grade对象 -->
+    <select id="selectById" resultMap="gradetiaojian">
+        select * from grade where gid=#{gid}
+    </select>
+</mapper>

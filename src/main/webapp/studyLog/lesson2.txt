@@ -1,0 +1,22 @@
+起别名
+    <!-- 扫描指定包下所有的类,以类名开头字母小写作为别名-->
+     <package name="com.jaremo.test_mybatis.lesson2"></package>
+
+引进mapper的时候
+    resource 是/
+    class 类路径下的接口
+
+结果集的映射
+    xml文件
+    <resultMap id  type> // id: 代号这个结果集  type: 返回值的类型
+        <id column 数据表的列名  property 实体类的属性名>  // 主键特有的标签 , 可以标识该列名是主键
+        <result> // 普通标签  和上面这个id标签作用相同,不能标识
+        执行返回值为单一记录的sql语句
+        <association property 需要被赋值实体类的属性名  column 传入的参数  select 命名空间的名字.标签的id名(指定调用哪个mapper下的哪个标签中sql语句)>
+        执行返回值为集合,map...的SQL语句
+        <collection javaType 指定select返回的值的类型  > // 除了需指明上面这个标签中字段以外,还需...
+    注解
+    @Results({
+        @Result(column property id), // id为true就为主键
+        @Result(javaType property column many(@Many(select="")),one(@One(select=""))) // many是执行集合... one是执行单一记录  javaType是 类.class
+    })
