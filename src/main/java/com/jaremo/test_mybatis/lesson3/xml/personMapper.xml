@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jaremo.test_mybatis.lesson3.mapper.PersonMapper">
+    <!--
+        动态sql语句
+    -->
+    <select id="findByPnameAndAddress" resultType="person">
+        select * from person where 1=1
+        <if test="pname!=null"> <!-- <if test=""></if> if标签采用的是java的语法(条件判断) -->
+            AND pname LIKE '%${pname}%'
+        </if>
+        <if test="address!=null">
+            AND address LIKE '%${address}%'
+        </if>
+    </select>
+
+    <select id="findBySex" resultType="person">
+        select * from person where
+        <choose> <!-- 多条件查询 解决if标签没有else的尴尬情况 jstl的标签,java的语法 结合体 -->
+            <when test="sex!=null">
+                sex = #{sex}
+            </when>
+            <otherwise>
+                sex = 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findByPerson" resultType="person">
+        select * from person
+        <where> <!-- where标签 是自动给sql语句添加where关键字  在where标签的if标签某一个成立的话会去掉and 假如多个条件成立 只会去掉第一个条件中and -->
+            <!-- <trim prefix="where" prefixOverrides="and"></trim> trim 替换值 将prefixOverrides中的值(只会替换首次出现的值) 替换为prefix中的值  -->
+            <if test="pname!=null">
+                and pname = #{pname}
+            </if>
+            <if test="address!=null">
+                and address = #{address}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateByPerson">
+        update person
+        <set> <!-- set标签自动添加set关键字 , 有逗号则去掉逗号,没有则没有-->
+            <if test="pname!=null">
+                pname = #{pname},
+            </if>
+            <if test="sex!=null">
+                sex = #{sex},
+            </if>
+            <if test="age!=null">
+                age = #{age}
+            </if>
+        </set>
+        where pid = #{pid}
+    </update>
+
+    <select id="findByPidList" resultType="person">
+        SELECT * from person where
+        <!--
+            foreach标签
+                collection 传入参数的名字(集合类型的)
+                open 以指定字符打头
+                close 以指定字符结尾
+                item 临时存储的变量名
+                separator 以指定字符进行分割
+                index
+        -->
+        <foreach collection="pidList" open="pid in (" close=")" item="pid" separator=",">
+            #{pid}
+        </foreach><!-- ${}/#{}-->
+    </select>
+
+</mapper>

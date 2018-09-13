@@ -9,6 +9,7 @@
     <typeAliases>
         <typeAlias type="com.jaremo.test_mybatis.lesson1.Account" alias="Account"></typeAlias>
         <package name="com.jaremo.test_mybatis.lesson2"></package> <!-- 扫描指定包下所有的类,以类名开头字母小写作为别名-->
+        <package name="com.jaremo.test_mybatis.lesson3"></package>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -28,5 +29,7 @@
         <!--<mapper resource="com/jaremo/test_mybatis/lesson2/xml/studentMapper.xml"></mapper>-->
         <mapper class="com.jaremo.test_mybatis.lesson2.mapper.GradeMapper"></mapper>
         <mapper class="com.jaremo.test_mybatis.lesson2.mapper.StudentMapper"></mapper>
+        <!--<mapper resource="com/jaremo/test_mybatis/lesson3/xml/personMapper.xml"></mapper>-->
+        <mapper class="com.jaremo.test_mybatis.lesson3.mapper.PersonMapper"></mapper>
     </mappers>
 </configuration>

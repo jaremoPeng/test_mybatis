@@ -1,0 +1,20 @@
+在xml文件中,动态的SQL语句
+    <if test> sql语句
+    <choose>
+        <when test>
+        <otherwise>
+    <where> 自动添加where关键字,自动删除and或者or
+    <set> 自动添加set关键字,自动删除 [,]
+    <trim prefix prefixOverrides suffix suffixOverrides> prefixOverrides这个属性指定的字符串(只会替换首次出现的)将被prefix指定的字符串替换
+    <foreach collection item open close separator> 传入的参数是集合类型的话collection  item 保存值的临时变量  open 以指定的字符串打头 close 以指定的字符串结尾 separator 以指定的字符串进行分割
+在注解中
+    @SelectProvider(type , method) 只需执行指定类中的指定方法的返回值   type指定类,method指定类中得指定方法(是map集合作为参数,这个map是自动装配的,你在你所注解的方法传参数时,设置的别名,将作为这个map的key,参数值作值)
+        解析这个map中的参数,通过普通的java拼接sql语句的方法执行即可,将拼接好的sql语句,交给 @SelectProvider来处理(自动)
+
+        不通过普通的java拼接方法,
+            即import org.apache.ibatis.jdbc.SQL
+                SQL sql = new SQL();
+                sql.SELECT(列名).FROM(表名);
+                sql.WHERE(条件); 无须加where
+                sql.AND(); 无须加and
+                sql.SET(); 无须加set
