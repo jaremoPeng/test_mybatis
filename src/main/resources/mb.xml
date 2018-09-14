@@ -5,6 +5,9 @@
 <!-- mybatis 的核心配置文件-->
 <configuration>
     <properties resource="jdbc.properties"></properties> <!-- 引用mysql的配置文件-->
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
     <!-- 起别名 -->
     <typeAliases>
         <typeAlias type="com.jaremo.test_mybatis.lesson1.Account" alias="Account"></typeAlias>
@@ -31,5 +34,6 @@
         <mapper class="com.jaremo.test_mybatis.lesson2.mapper.StudentMapper"></mapper>
         <!--<mapper resource="com/jaremo/test_mybatis/lesson3/xml/personMapper.xml"></mapper>-->
         <mapper class="com.jaremo.test_mybatis.lesson3.mapper.PersonMapper"></mapper>
+        <mapper resource="com/jaremo/test_mybatis/lesson4/xml/PersonMapper.xml"></mapper>
     </mappers>
 </configuration>

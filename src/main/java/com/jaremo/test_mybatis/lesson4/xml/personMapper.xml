@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.jaremo.test_mybatis.lesson4.mapper.PersonMapper">
+    <!--开启二级缓存
+        eviction : FIFO回收策略为先进先出
+        flushInterval 自动刷新时间设置毫秒值
+        size 最多缓存指定多个引用对象(最多1024个)
+        readOnly 是否只读
+    -->
+    <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/>
+    <select id="findByPid" resultType="com.jaremo.test_mybatis.lesson4.domain.Person">
+        SELECT * from person where pid=#{pid}
+    </select>
+</mapper>
